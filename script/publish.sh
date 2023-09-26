@@ -5,7 +5,7 @@ PREVIOUS_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 if [ -z "$(git status --porcelain)" ]; then 
   # Working directory clean
   echo "Bumping version"
-  VERSION=¤(npm version patch)
+  VERSION=$(npm version patch)
   echo "Deploying gh-pages..."
   if git show-ref --verify --quiet "refs/heads/gh-pages"; then
     git checkout gh-pages
@@ -18,6 +18,8 @@ if [ -z "$(git status --porcelain)" ]; then
     echo "Modifying .gitignores..."
     ghpages-ignores
   fi
+  npm run benchmark
+  npm run build
   git add .
   git commit -m "v$VERSION"
   git tag $VERSION
