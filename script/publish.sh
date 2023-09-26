@@ -16,7 +16,11 @@ if [ -z "$(git status --porcelain)" ]; then
   git merge main --no-edit
   if [[ $* == *-i* ]]; then
     echo "Modifying .gitignores..."
+<<<<<<< HEAD
     ./ignore.js
+=======
+    node ./ignore.js
+>>>>>>> main
   fi
   npm run benchmark
   npm run build
