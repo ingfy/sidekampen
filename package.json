@@ -12,7 +12,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "publish": "sh script/publish.sh",
+    "prepublish": "npm run benchmark && npm run build"
   },
   "author": "Yngve Svalestuen",
   "license": "MIT",
