@@ -1,0 +1,12 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "ts-node": {
+    "files": true,
+    "esm": true
+  },
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "sidekampen",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Benchmarking av nettsider for Oslos konsulentselskaper",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "benchmark": "node --loader ts-node/esm lib/benchmark.ts",
+    "clean": "rimraf reports",
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "author": "Yngve Svalestuen",
+  "license": "MIT",
+  "dependencies": {
+    "lighthouse": "^11.1.0",
+    "astro": "^3.1.2"
+  },
+  "devDependencies": {
+    "rimraf": "^5.0.1",
+    "ts-node": "^10.9.1"
+  }
+}
