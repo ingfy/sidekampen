@@ -67,7 +67,6 @@ function partialPaths(p: string) {
 
 function isDescendant(from: string, p: string) {
   const result = !path.relative(from, p).startsWith("..");
-  console.log("isDescendant", from, "->", p, "?", result);
   return result;
 }
 
