@@ -1,42 +1,25 @@
 ---
-import type { Result as LighthouseResult } from "lighthouse";
-import { normalizeSiteName } from "../../normalizeSiteName.ts";
 import Layout from "../../layouts/Layout.astro";
 import Title from "../../components/Title.astro";
-const reports = await Astro.glob<LighthouseResult>(
-    `../../../reports/**/report.json`,
-);
+import { loadReports } from "../../reports.ts";
+
+const reports = await loadReports();
 interface Params {
     domain: string;
 }
 export async function getStaticPaths(): Promise<{ params: Params }[]> {
-    const reports = await Astro.glob<LighthouseResult>(
-        `../../../reports/**/report.json`,
-    );
-    console.log({
-        urls: reports
-            .map((x) => new URL(x.finalDisplayedUrl))
-            .map(normalizeSiteName),
-    });
-    const sites = reports
-        .map((x) => new URL(x.finalDisplayedUrl))
-        .map(normalizeSiteName);
-    return sites.map((domain) => ({
+    const reports = await loadReports();
+    return reports.map(({ siteName }) => ({
         params: {
-            domain,
+            domain: siteName,
         },
     }));
 }
 
 const { domain } = Astro.params;
-const report = reports.find(
-    (report) => normalizeSiteName(new URL(report.finalDisplayedUrl)) === domain,
-);
-const { default: htmlReport } = await import(
-    `../../../reports/${domain}/report.html?raw`
-);
-if (!report || !htmlReport)
-    throw new Error(`No matching report found for domain "${domain}"`);
+const report = reports.find((report) => report.siteName === domain);
+if (!report) throw new Error(`No matching report found for domain "${domain}"`);
+const htmlReport = await report.html();
 ---
 
 <Layout title={domain}>

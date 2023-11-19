@@ -4,10 +4,14 @@ import Card from "../components/Card.astro";
 import Title from "../components/Title.astro";
 import type { Result as LighthouseResult } from "lighthouse";
 import type AuditDetails from "lighthouse/types/lhr/audit-details.d.ts";
-import { normalizeSiteName } from "../normalizeSiteName.ts";
+import { loadReports } from "../reports.ts";
+import { DetailsButton } from "../components/Details.tsx";
 
-const reports = await Astro.glob<LighthouseResult>(
-  "../../reports/**/report.json",
+const reports = await Promise.all(
+  (await loadReports()).map(async (report) => ({
+    ...report,
+    json: await report.json(),
+  }))
 );
 
 function performance(report: LighthouseResult) {
@@ -23,23 +27,28 @@ function performance(report: LighthouseResult) {
     <ul class="link-card-grid">
       {
         reports
-          .sort((a, b) => (performance(b) ?? 0) - (performance(a) ?? 0))
+          .sort(
+            (a, b) => (performance(b.json) ?? 0) - (performance(b.json) ?? 0)
+          )
           .map((report, i) => {
-            const siteName = normalizeSiteName(
-              new URL(report.finalDisplayedUrl),
-            );
             return (
               <Card
-                title={`#${i + 1}: ${siteName ?? ""}`}
-                href={`${import.meta.env.BASE_URL}/reports/${siteName}`}
-                body={`Performance: ${performance(report)}`}
+                title={`#${i + 1}: ${report.siteName ?? ""}`}
+                href={`${import.meta.env.BASE_URL}/reports/${report.siteName}`}
                 image={
                   (
-                    report.audits["final-screenshot"]
+                    report.json.audits["final-screenshot"]
                       .details as AuditDetails.Screenshot
                   ).data
                 }
-              />
+              >
+                <p>Performance: {performance(report.json)}</p>
+                <p>
+                  <DetailsButton client:load report={report.json}>
+                    Detaljer
+                  </DetailsButton>
+                </p>
+              </Card>
             );
           })
       }

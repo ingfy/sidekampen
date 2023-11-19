@@ -1,0 +1,10 @@
+dialog::backdrop {
+  background-color: black;
+  opacity: 0.3;
+  transition: opacity 0.1s ease;
+}
+
+dialog a:after {
+  content: "\25F3";
+  text-decoration: none;
+}
