@@ -25,7 +25,12 @@ export async function generateReport(
   site: URL,
   target: { html: string; json: string }
 ) {
-  const chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"] });
+  let chrome: chromeLauncher.LaunchedChrome;
+  try {
+    chrome = await chromeLauncher.launch({ chromeFlags: ["--headless"], });
+  } catch (error) {
+    throw new Error(`Launching chrome failed: ${error}`);
+  }
 
   try {
     const runnerResult = await lighthouse(site.toString(), {
@@ -100,4 +105,7 @@ async function main() {
 
 main()
   .then(() => process.exit(0))
-  .catch(console.error);
+  .catch(err => {
+    console.error("benchmark failed", err);
+    process.exit(-1);
+  });

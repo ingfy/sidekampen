@@ -38,3 +38,14 @@ All commands are run from the root of the project, from a terminal:
 | `npm run preview`         | Preview your build locally, before deploying     |
 | `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
 | `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 📈 Benchnmark
+
+Generate benchnmark with:
+
+```bash
+npm run benchmark
+```
+
+Generating benchmark requires Puppeteer and Headless Chrome installed on the system.
+See the [puppeteer docs](https://pptr.dev/troubleshooting#running-puppeteer-on-wsl-windows-subsystem-for-linux).
