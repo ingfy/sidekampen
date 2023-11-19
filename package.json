@@ -1,6 +1,6 @@
 {
   "name": "sidekampen",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "description": "Benchmarking av nettsider for Oslos konsulentselskaper",
   "main": "index.js",
