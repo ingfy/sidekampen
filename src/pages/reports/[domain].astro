@@ -1,0 +1,64 @@
+---
+import type { Result as LighthouseResult } from "lighthouse";
+import { normalizeSiteName } from "../../normalizeSiteName.ts";
+import Layout from "../../layouts/Layout.astro";
+import Title from "../../components/Title.astro";
+const reports = await Astro.glob<LighthouseResult>(
+    `../../../reports/**/report.json`,
+);
+interface Params {
+    domain: string;
+}
+export async function getStaticPaths(): Promise<{ params: Params }[]> {
+    const reports = await Astro.glob<LighthouseResult>(
+        `../../../reports/**/report.json`,
+    );
+    console.log({
+        urls: reports
+            .map((x) => new URL(x.finalDisplayedUrl))
+            .map(normalizeSiteName),
+    });
+    const sites = reports
+        .map((x) => new URL(x.finalDisplayedUrl))
+        .map(normalizeSiteName);
+    return sites.map((domain) => ({
+        params: {
+            domain,
+        },
+    }));
+}
+
+const { domain } = Astro.params;
+const report = reports.find(
+    (report) => normalizeSiteName(new URL(report.finalDisplayedUrl)) === domain,
+);
+const { default: htmlReport } = await import(
+    `../../../reports/${domain}/report.html?raw`
+);
+if (!report || !htmlReport)
+    throw new Error(`No matching report found for domain "${domain}"`);
+---
+
+<Layout title={domain}>
+    <aside>
+        <a href={import.meta.env.BASE_URL}>
+            <span>&leftarrow;</span>
+            <span>Tilbake til oversikten</span>
+        </a>
+    </aside>
+    <main>
+        <Title>Detaljer for {domain}</Title>
+        <div class="content">
+            <Fragment set:html={htmlReport} />
+        </div>
+    </main>
+</Layout>
+
+<style>
+    aside {
+        text-align: center;
+    }
+    aside a {
+        color: white;
+    }
+</style>
