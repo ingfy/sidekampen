@@ -1,7 +1,4 @@
-<<<<<<< HEAD
 #!/usr/bin/env node
-=======
->>>>>>> main
 // Modifies .gitignore to remove "dist/"
 import { readFile, writeFile } from "fs";
 import { resolve } from "path";
