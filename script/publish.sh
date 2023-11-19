@@ -22,7 +22,6 @@ if [ -z "$(git status --porcelain)" ]; then
   npm run build
   git add .
   git commit -m "v$VERSION"
-  git tag $VERSION
   git push origin gh-pages
   git checkout $PREVIOUS_BRANCH
 else 
