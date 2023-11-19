@@ -2,5 +2,6 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-    site: "https://ingfy.github.io/sidekampen"
+    site: "https://ingfy.github.io",
+    base: "/sidekampen"
 });
