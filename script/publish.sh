@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 PREVIOUS_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
